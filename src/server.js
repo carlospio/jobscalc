@@ -11,6 +11,10 @@ server.set('view engine', 'ejs')
 // Enable static files
 server.use(express.static('public'))
 
+// to use req body
+
+server.use(express.urlencoded({extended: true}))
+
 // Routes
 server.use(routes)
 
