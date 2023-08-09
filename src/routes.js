@@ -7,11 +7,11 @@ const Profile = {
     data: {
         name: "Carlos Pio",
         avatar: "https://github.com/carlospio.png",
-        monthlyBudget: 3000,
-        daysPerWeek: 5,
-        hoursPerDay: 5,
-        vacationPerYear: 4,
-        valueHour: 75,
+        "monthly-budget": 3000,
+        "days-per-week": 5,
+        "hours-per-day": 4,
+        "vacation-per-year": 4, 
+        "value-hour": 75,
     
     },
     controllers: {
@@ -20,7 +20,27 @@ const Profile = {
         },
 
         update(req, res){
-            
+            const data = req.body
+
+            const weeksPerYear = 52
+
+            const weeksPerMonth = (weeksPerYear - data['vacation-per-year']) / 12
+
+            const weekTotalHours = data['hours-per-day'] * data['days-per-week']
+
+            const monthlyTotalHours = weekTotalHours * weeksPerMonth
+
+            const valueHour = data['monthly-budget'] / monthlyTotalHours
+
+            Profile.data = {
+                ...Profile.data,
+                ...req.body,
+                "value-hour": valueHour
+
+            }
+
+
+            return res.redirect('/profile')
         },
     }
 }
@@ -62,7 +82,7 @@ const Job = {
                     ...job,
                     remaining,
                     status,
-                    budget: Profile.data.valueHour * job['total-hours']
+                    budget: Profile.data['value-hour'] * job['total-hours']
                 }
             })
             return res.render(views + "index", { jobs: updateJobs })
@@ -87,7 +107,16 @@ const Job = {
 
             return res.redirect('/')
 
-        }
+        },
+
+        show(req,res){
+
+            const jobId = req.params.id
+
+            const job = Job.data.find(job => job.id === jobId)
+
+         return res.render(views + "job-edit", { job })
+        },
     },
     services: {
         remainingDays(job) {
@@ -119,7 +148,7 @@ const Job = {
 routes.get('/', Job.controllers.index)
 routes.get('/job', Job.controllers.create)
 routes.post('/job', Job.controllers.save)
-routes.get('/job/edit', (req, res) => res.render(views + "job-edit"))
+routes.get('/job/:id', Job.controllers.show)
 routes.get('/profile', Profile.controllers.index)
 routes.post('/profile', Profile.controllers.update)
 

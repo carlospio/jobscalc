@@ -34,13 +34,13 @@
         <h2><%= profile.name  %></h2>
         <p>
           O valor da sua hora é <br/>
-          <strong>R$ 75,00</strong>
+          <strong>R$ <%= profile['value-hour'].toFixed(2).replace('.', ',') %></strong>
         </p>
         <button class="button green" form="form-profile" type="submit">Salvar dados</button>
       </aside>
       <main>
 
-        <form id="form-profile">
+        <form id="form-profile" method="POST" action="/profile">
           <fieldset>
             <legend>Dados do perfil</legend>
             <div class="separator light"></div>
@@ -77,7 +77,7 @@
                   id="monthly-budget" 
                   name="monthly-budget" 
                   placeholder="R$"
-                  value="<%= profile.monthlyBudget  %>"
+                  value="<%= profile['monthly-budget'] %>"
                   />
               </div>
 
@@ -88,7 +88,7 @@
                   type="number"
                   id="hours-per-day" 
                   name="hours-per-day"
-                  value="<%= profile.hoursPerDay  %>"
+                  value="<%= profile['hours-per-day']  %>"
                   />
               </div>
             </div>
@@ -101,7 +101,7 @@
                   type="number"
                   id="days-per-week" 
                   name="days-per-week" 
-                  value="<%= profile.daysPerWeek  %>"
+                  value="<%= profile['days-per-week']  %>"
                   />
               </div>
 
@@ -112,7 +112,7 @@
                   type="number" 
                   id="vacation-per-year" 
                   name="vacation-per-year" 
-                  value="<%= profile.vacationPerYear  %>"
+                  value="<%= profile['vacation-per-year']  %>"
                   />
               </div>
             </div>
