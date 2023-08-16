@@ -18,6 +18,8 @@ module.exports = {
 
         const valueHour = data['monthly-budget'] / monthlyTotalHours
 
+        
+
         Profile.update({
 
             ...Profile.get(),
